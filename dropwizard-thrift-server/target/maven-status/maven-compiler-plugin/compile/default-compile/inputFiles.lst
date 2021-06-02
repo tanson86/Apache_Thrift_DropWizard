@@ -1,0 +1,8 @@
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/dao/MathOperationDAOProxy.java
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/resources/CalculatorServerResource.java
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/thrift/CalculatorServerThriftApplication.java
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/CalculatorServerApplication.java
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/thrift/CalculatorHandler.java
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/CalculatorServerConfiguration.java
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/dao/MathOperationDAO.java
+/Users/tansonthomas/Altran_WS/WS1/dropwizard-thrift-multimodule/dropwizard-thrift-server/src/main/java/com/server/entity/MathOperation.java

@@ -1,0 +1,10 @@
+com/server/CalculatorServerConfiguration.class
+com/server/thrift/CalculatorHandler.class
+com/server/CalculatorServerApplication.class
+com/server/CalculatorServerApplication$1.class
+com/server/thrift/CalculatorServerThriftApplication.class
+com/server/thrift/CalculatorHandler$1.class
+com/server/dao/MathOperationDAOProxy.class
+com/server/dao/MathOperationDAO.class
+com/server/resources/CalculatorServerResource.class
+com/server/entity/MathOperation.class

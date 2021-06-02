@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.dropwizard.thrift.multimodule</groupId>
+  <artifactId>dropwizard-thrift-multimodule</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Dropwizard Apache Thrift Demo</name>
+  <modules>
+  	<module>dropwizard-thrift-client</module>
+  	<module>dropwizard-thrift-server</module>
+  	<module>dropwizard-thrift-services</module>
+  </modules>
+    <properties>
+		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+   		<maven.compiler.target>11</maven.compiler.target>
+  	</properties>
+  	  <dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.thrift/libthrift -->
+		<dependency>
+		    <groupId>org.apache.thrift</groupId>
+		    <artifactId>libthrift</artifactId>
+		    <version>0.14.1</version>
+		</dependency>		
+  </dependencies>
+</project>

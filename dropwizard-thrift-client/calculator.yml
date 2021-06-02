@@ -1,0 +1,10 @@
+server:
+#  softNofileLimit: 1000
+#  hardNofileLimit: 1000
+  applicationConnectors:
+    - type: http
+      port: 9092
+      
+  adminConnectors:
+    - type: http
+      port: 9093
