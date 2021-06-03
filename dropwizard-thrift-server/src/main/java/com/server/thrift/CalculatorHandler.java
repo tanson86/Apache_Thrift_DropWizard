@@ -1,5 +1,7 @@
 package com.server.thrift;
 
+import java.util.OptionalInt;
+
 import org.apache.thrift.TException;
 
 import com.dropwizard.thrift.services.*;
@@ -10,9 +12,7 @@ public class CalculatorHandler implements Calculator.Iface{
 	
 	private CalculatorServerResource calculatorServerResource;
 	
-	public CalculatorHandler() {
-		
-	}
+	public CalculatorHandler() {}
 	
 	public CalculatorHandler(CalculatorServerResource calculatorServerResource) {
 		System.out.println("Initialising CalculatorHandler");
@@ -20,32 +20,31 @@ public class CalculatorHandler implements Calculator.Iface{
 	};
 
 	public String ping() throws TException {
-		// TODO Auto-generated method stub
 		return "PONG";
 	}
 
-	public int calculate(Work work) throws InvalidOperation, TException {
+	public int calculate(Work work) throws TException {
 		System.out.println("calculate( {" + work.op + "," + work.num1 + "," + work.num2 + "})");
-		calculatorServerResource.calculate(String.valueOf(work.num1), String.valueOf(work.num2), work.op.toString());
-	    int val = 0;
-	    switch (work.op) {
+	    Calculate calc = CalculatorFactory.getCalculator(work);
+	    return calc.calculate(work.num1, work.num2,calculatorServerResource);
+	}	
+}
+
+class CalculatorFactory{
+	static Calculate getCalculator(Work work) throws InvalidOperation {
+		Calculate c  = null;
+		switch (work.op) {
 	    case ADD:
-	      val = work.num1 + work.num2;
+	      c = new Add();
 	      break;
 	    case SUBTRACT:
-	      val = work.num1 - work.num2;
+	      c = new Subtract();
 	      break;
 	    case MULTIPLY:
-	      val = work.num1 * work.num2;
+	      c = new Multiply();
 	      break;
 	    case DIVIDE:
-	      if (work.num2 == 0) {
-	        InvalidOperation io = new InvalidOperation();
-	        io.whatOp = work.op.getValue();
-	        io.why = "Cannot divide by 0";
-	        throw io;
-	      }
-	      val = work.num1 / work.num2;
+	      c = new Divide();
 	      break;
 	    default:
 	      InvalidOperation io = new InvalidOperation();
@@ -53,8 +52,48 @@ public class CalculatorHandler implements Calculator.Iface{
 	      io.why = "Unknown operation";
 	      throw io;
 	    }
-	    return val;
-	}	
-	
+		return c;
+	}
+}
 
+interface Calculate{
+	int calculate(int num1,int num2, CalculatorServerResource calculatorServerResource) throws InvalidOperation, TException;
+	default int existsInDB(int num1,int num2, CalculatorServerResource calculatorServerResource, Operation op) {
+		return calculatorServerResource.calculate(OptionalInt.of(num1), OptionalInt.of(num2), op);
+	}
+}
+
+class Add implements Calculate{
+	public int calculate(int num1, int num2, CalculatorServerResource calculatorServerResource) {
+		int existsInDB = existsInDB(num1, num2, calculatorServerResource, Operation.ADD);
+		return num1+num2;
+	}
+}
+
+class Subtract implements Calculate{
+
+	public int calculate(int num1, int num2, CalculatorServerResource calculatorServerResource) {
+		int existsInDB = existsInDB(num1, num2, calculatorServerResource, Operation.SUBTRACT);
+		return num1-num2;
+	}
+	
+}
+
+class Multiply implements Calculate{
+
+	public int calculate(int num1, int num2, CalculatorServerResource calculatorServerResource) {
+		int existsInDB = existsInDB(num1, num2, calculatorServerResource, Operation.MULTIPLY);
+		return num1*num2;
+	}
+	
+}
+
+class Divide implements Calculate{
+	public int calculate(int num1, int num2, CalculatorServerResource calculatorServerResource) {
+		if(num2 == 0)
+			throw new ArithmeticException("Division by 0 not allowed");
+		int existsInDB = existsInDB(num1, num2, calculatorServerResource, Operation.DIVIDE);
+		return num1/num2;
+	}
+	
 }

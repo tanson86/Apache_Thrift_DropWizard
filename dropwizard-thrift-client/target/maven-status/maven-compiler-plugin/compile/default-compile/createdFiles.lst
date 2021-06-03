@@ -1,4 +1,4 @@
 com/client/dropwizard/controller/CalculatorController.class
-com/client/CalculatorApplication.class
 com/client/CalculatorConfiguration.class
+com/client/CalculatorClientApplication.class
 com/client/thrift/application/CalculatorThriftClient.class

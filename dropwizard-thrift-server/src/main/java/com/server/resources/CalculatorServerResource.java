@@ -1,7 +1,10 @@
 package com.server.resources;
 
 import java.util.Optional;
+import java.util.OptionalInt;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -34,22 +37,22 @@ public class CalculatorServerResource {
 	
 
 	/*
-	 * Using hibernate outside the context of jersey and hence have to use UnitOfWorkAwareProxyFactory
+	 * Using hibernate outside the context of jersey, hence using UnitOfWorkAwareProxyFactory
 	 */
 	@GET
     @UnitOfWork
-    public int calculate(@QueryParam("num1") String num1,@QueryParam("num2") String num2,@QueryParam("op") String op) {
+    public int calculate(@QueryParam("num1") @NotNull OptionalInt num1,@QueryParam("num2") @NotEmpty OptionalInt num2,@QueryParam("op") Operation op) {
             try {
-            	Integer i1 = Integer.parseInt(num1);
-                Integer i2 = Integer.parseInt(num2);
+            	Integer i1 = num1.getAsInt();
+                Integer i2 = num2.getAsInt();
                 Operation o = Operation.valueOf(op.toString());
                 System.out.println(String.format("Calculate request came with nums %s %s and operation as %s", num1,num2,op));
                 MathOperationDAO mathOperationDAO = new MathOperationDAO(hibernateBundle.getSessionFactory());
                 MathOperationDAOProxy mathOperationDAOProxy = new UnitOfWorkAwareProxyFactory(hibernateBundle)
                                .create(MathOperationDAOProxy.class,MathOperationDAO.class,mathOperationDAO);
-                Optional<MathOperation> mo = mathOperationDAOProxy.findByNum1AndNum2AndOperation(i1, i2, op);
-                if(mo.isEmpty()) {
-                	mathOperationDAOProxy.persist(i1, i2, op);
+                Optional<MathOperation> mo = mathOperationDAOProxy.findByNum1AndNum2AndOperation(i1, i2, op.toString());
+                if(!mo.isPresent()) {
+                	mathOperationDAOProxy.persist(i1, i2, op.toString());
                 }
                 return 10;
             }catch(Exception e) {

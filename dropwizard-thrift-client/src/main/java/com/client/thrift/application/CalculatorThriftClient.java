@@ -17,17 +17,14 @@ public class CalculatorThriftClient {
 
 	
 	public static void main(String... a) throws InvalidOperation, TException {
-		
 		System.out.println("In CalculatorThriftClient---->calculate");
 		TTransport transport = new THttpClient("http://localhost:9090/calculator");
-
-//		TTransport transport = new TSocket("localhost", 9095);
-//		transport.open();
-
 		TProtocol protocol = new TBinaryProtocol(transport);
 		Calculator.Client client = new Calculator.Client(protocol);
-		int res = client.calculate(new Work(10, 80, Operation.ADD));
-		//System.out.println(String.format("Result of calling calculate with %d,%d and operation %s is %d", num1,num2,op.toString(),res));
+		int num1 = 80,num2 = 10;
+		Operation op = Operation.DIVIDE;
+		int res = client.calculate(new Work(num1, num2, op));
+		System.out.println(String.format("Result of calling calculate with %d,%d and operation %s is %d", num1,num2,op.toString(),res));
 		System.out.println(res);
 	}
 	
@@ -40,7 +37,6 @@ public class CalculatorThriftClient {
 		int res = client.calculate(new Work(num1, num2, op));
 		System.out.println(String.format("Result of calling calculate with %d,%d and operation %s is %d", num1,num2,op.toString(),res));
 		return res;
-
 	}
 
 }
